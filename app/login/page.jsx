@@ -2,6 +2,7 @@ import Link from "next/link";
 import LoginForm from "@/components/login-form";
 import { Logo } from "@/components/logo";
 
+// Login Page Component || Server Component (RSC)
 export default function LoginPage() {
   return (
     <div className="flex flex-col min-h-screen container">
