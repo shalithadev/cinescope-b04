@@ -1,4 +1,5 @@
 import HeaderNav from "@/components/header-nav";
+import FeaturedMovies from "@/components/home/featured-movies";
 import HeroBanner from "@/components/home/hero-banner";
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
       <HeaderNav />
       <main className="flex-1">
         <HeroBanner />
+        <FeaturedMovies />
       </main>
       <footer className="flex-1 bg-amber-400">Footer Section</footer>
     </div>
