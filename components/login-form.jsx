@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EMAIL_REGEX } from "@/lib/constants";
+import { signIn } from "@/lib/auth-client";
 
 const DEFAULT_ERROR = {
   error: false,
@@ -58,39 +59,30 @@ export default function LoginForm() {
 
     // Basic validation
     if (validateForm({ email, password })) {
-      // pass the login data to the login API
       setIsLoading(true);
+
       try {
-        const loginResponse = await fetch(
-          "http://localhost:3000/api/v1/login",
+        await signIn.email(
+          { email, password },
           {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+            onSuccess: (ctx) => {
+              console.log("Login successful!", ctx);
             },
-            body: JSON.stringify({ email, password }),
+            onError: (ctx) => {
+              setError({
+                error: true,
+                message: ctx.error.message || "Login failed. Please try again.",
+              });
+            },
           }
         );
-
-        if (!loginResponse.ok) {
-          const errorData = await loginResponse.json();
-          setError({
-            error: true,
-            message: errorData.message || "Login failed. Please try again.",
-          });
-        } else {
-          const loginData = await loginResponse.json();
-          console.log("Login successful!", loginData);
-        }
       } catch (error) {
         setError({
           error: true,
           message: "An unexpected error occurred. Please try again.",
         });
       } finally {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 3000);
+        setIsLoading(false);
       }
     } else {
       console.log("Validation failed!");
