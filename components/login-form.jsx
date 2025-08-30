@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +23,7 @@ const DEFAULT_ERROR = {
 };
 
 export default function LoginForm() {
+  const router = useRouter();
   const [error, setError] = useState(DEFAULT_ERROR);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,6 +69,7 @@ export default function LoginForm() {
           {
             onSuccess: (ctx) => {
               console.log("Login successful!", ctx);
+              router.push("/dashboard");
             },
             onError: (ctx) => {
               setError({
@@ -77,6 +80,7 @@ export default function LoginForm() {
           }
         );
       } catch (error) {
+        console.log(error);
         setError({
           error: true,
           message: "An unexpected error occurred. Please try again.",

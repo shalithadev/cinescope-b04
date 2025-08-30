@@ -1,6 +1,9 @@
+import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
-import MoviesList from "./movies-list";
+import MoviesList from "@/components/home/movies-list";
+import { MoviesListSkeleton } from "@/components/home/movies-list";
 
+// RSC
 export default function FeaturedMovies() {
   return (
     <section id="featured-movies" className="container px-4 py-12 md:px-6">
@@ -23,7 +26,9 @@ export default function FeaturedMovies() {
       </div>
 
       {/* Movies List */}
-      <MoviesList />
+      <Suspense fallback={<MoviesListSkeleton />}>
+        <MoviesList />
+      </Suspense>
     </section>
   );
 }

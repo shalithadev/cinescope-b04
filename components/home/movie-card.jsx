@@ -5,9 +5,11 @@ import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 
 export default function MovieCard({ movie }) {
   const [posterUrl, setPosterUrl] = useState(movie.poster);
+
   return (
     <Card className="board-primary/20 hover:border-primary/50 overflow-hidden py-0 gap-0 transition-colors">
       <div className="aspect-2/3 w-full overflow-hidden">
@@ -56,5 +58,29 @@ export default function MovieCard({ movie }) {
         </Button>
       </CardFooter>
     </Card>
+  );
+}
+
+export function MovieCardSkeleton() {
+  return (
+    <div className="overflow-hidden rounded-lg">
+      <Skeleton className="aspect-2/3 w-full" />
+      <div className="p-4">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
+
+        <div className="flex mt-3 gap-1">
+          <Skeleton className="h-5 w-1/5" />
+          <Skeleton className="h-5 w-1/5" />
+        </div>
+
+        <div className="flex justify-between gap-2 mt-6">
+          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-6 w-16 rounded-full" />
+        </div>
+      </div>
+    </div>
   );
 }
