@@ -1,3 +1,3 @@
 export default function AdminDashboard() {
-  return <div className="container">AdminDashboard</div>;
+  return <div className="flex min-h-screen bg-white">Dashboard Home</div>;
 }
