@@ -35,7 +35,7 @@ export default function HeaderNav({ isAuthenticated }) {
           </Link>
           {isAuthenticated && (
             <Link
-              href="/dashboard"
+              href="/admin"
               className="hover:text-primary text-sm font-medium transition-colors"
             >
               Dashboard

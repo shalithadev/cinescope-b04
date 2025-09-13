@@ -1,6 +1,6 @@
-import { AdminSidebar } from "@/components/admin-sidebar";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import UserNav from "@/components/user-nav";
+import AdminSidebar from "@/components/admin-sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
 export const metadata = {
   title: "Cinescope | Admin Dashboard",

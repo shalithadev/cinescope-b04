@@ -27,20 +27,20 @@ import { Logo } from "./logo";
 import ModeToggle from "./mode-toggle";
 
 const menuItems = [
-  { title: "Dashboard", href: "/dashboard", icon: HomeIcon, exact: true },
-  { title: "Movies", href: "/dashboard/movies", icon: FilmIcon },
-  { title: "Users", href: "/dashboard/users", icon: UsersIcon },
-  { title: "Reviews", href: "/dashboard/reviews", icon: MessageSquareIcon },
-  { title: "Analytics", href: "/dashboard/analytics", icon: BarChartIcon },
-  { title: "Settings", href: "/dashboard/settings", icon: SettingsIcon },
+  { title: "Dashboard", href: "/admin", icon: HomeIcon, exact: true },
+  { title: "Movies", href: "/admin/movies", icon: FilmIcon },
+  { title: "Users", href: "/admin/users", icon: UsersIcon },
+  { title: "Reviews", href: "/admin/reviews", icon: MessageSquareIcon },
+  { title: "Analytics", href: "/admin/analytics", icon: BarChartIcon },
+  { title: "Settings", href: "/admin/settings", icon: SettingsIcon },
 ];
 
 const accountItems = [
-  { title: "Profile", href: "/dashboard/profile", icon: UserIcon },
+  { title: "Profile", href: "/admin/profile", icon: UserIcon },
   { title: "Public Site", href: "/", icon: FilmIcon },
 ];
 
-export function AdminSidebar() {
+export default function AdminSidebar() {
   const pathname = usePathname();
 
   console.log("Current pathname:", pathname);
