@@ -65,3 +65,7 @@ export const searchMovies = async (query) => {
     };
   }
 };
+
+export const createMovie = async () => {
+  //
+};
