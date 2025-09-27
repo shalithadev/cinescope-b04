@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
@@ -20,8 +22,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import UpdateMovieDialog from "@/components/update-movie-dialog";
 
 export default function MovieTable({ movies }) {
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+
+  const toggleUpdateDialog = (open) => {
+    // Using requestAnimationFrame to ensure the dialog opens after the state update
+    requestAnimationFrame(() => setShowUpdateDialog(open || !showUpdateDialog));
+  };
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -80,12 +91,35 @@ export default function MovieTable({ movies }) {
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Movie Actions</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>View Details</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSelectedMovie(movie);
+                        toggleUpdateDialog(true);
+                      }}
+                    >
+                      Update
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="text-destructive">
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      <UpdateMovieDialog
+        open={showUpdateDialog}
+        onOpenChange={toggleUpdateDialog}
+        movie={selectedMovie}
+      />
     </div>
   );
 }

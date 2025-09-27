@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/db";
+import { ObjectId } from "mongodb";
 
 // Option 1: Get all movies from database using /api/v1/movies
 export const getMovies = async () => {
@@ -36,7 +37,7 @@ export const searchMovies = async (query) => {
   try {
     // Search by title (i = case-insensitive)
     const movies = await db
-      .collection("movies")
+      .collection("movies_n")
       .find({ title: { $regex: query, $options: "i" } }) // search query
       .limit(50)
       .toArray();
@@ -66,6 +67,46 @@ export const searchMovies = async (query) => {
   }
 };
 
-export const createMovie = async () => {
-  //
+export const createMovie = async (movie) => {
+  try {
+    const result = await db.collection("movies_n").insertOne(movie);
+
+    if (result.acknowledged) {
+      console.log(`A movie was inserted with the _id: ${result.insertedId}`);
+
+      return {
+        success: true,
+        message: "Movie created successfully!",
+      };
+    } else {
+      return undefined;
+    }
+  } catch (error) {
+    console.log("Mongodb movie insert failed!", error);
+  }
+};
+
+export const updateMovie = async (movieId, movieDoc) => {
+  try {
+    const result = await db
+      .collection("movies_n")
+      .updateOne(
+        { _id: ObjectId.createFromHexString(movieId) },
+        { $set: movieDoc },
+        { upsert: true }
+      );
+
+    if (result.acknowledged) {
+      console.log(`A movie was updated with the _id: ${result.upsertedId}`);
+
+      return {
+        success: true,
+        message: "Movie updated successfully!",
+      };
+    } else {
+      return undefined;
+    }
+  } catch (error) {
+    console.log("Mongodb movie update failed!", error);
+  }
 };

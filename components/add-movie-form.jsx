@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,15 +20,49 @@ import {
   getAllMovieStatus,
   getAllYears,
 } from "@/lib/utils";
+import { createMovie } from "@/actions/movies";
 
-export default function AddMoviesForm() {
+export default function AddMovieForm({ showDialog }) {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const years = getAllYears();
   const genres = getAllGenres();
   const statuses = getAllMovieStatus();
 
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // ignore the default form submission behavior
+    const formData = new FormData(event.currentTarget);
+    const movie = {
+      title: formData.get("title"),
+      year: formData.get("year"),
+      directors: [formData.get("director")],
+      genres: [formData.get("genre")],
+      imdb: { rating: Number(formData.get("rating")) },
+      runtime: formData.get("runtime"),
+      plot: formData.get("overview"),
+      poster: formData.get("poster"),
+      backdrop: formData.get("backdrop"),
+      status: formData.get("status"),
+      lastUpdated: new Date().toISOString(),
+    };
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await createMovie(movie);
+
+      if (response?.success) {
+        router.refresh();
+        setIsSubmitting(false);
+        showDialog(false);
+      }
+    } catch {
+      console.log("Error in handle submit");
+    }
+  };
+
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="title">
@@ -143,7 +178,7 @@ export default function AddMoviesForm() {
 
         <div className="space-y-2">
           <Label htmlFor="status">
-            Genre<span className="text-red-500">*</span>
+            Status<span className="text-red-500">*</span>
           </Label>
           <Select id="status" name="status" required>
             <SelectTrigger className="w-full">
@@ -169,7 +204,7 @@ export default function AddMoviesForm() {
           variant="outline"
           className="min-w-[6.375rem]"
           disabled={isSubmitting}
-          onClick={() => {}}
+          onClick={() => showDialog(false)}
         >
           Cancel
         </Button>
