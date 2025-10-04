@@ -14,19 +14,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function MovieDetails({ movie, reviews }) {
   // const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    // Simulate loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+  // useEffect(() => {
+  //   // Simulate loading
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1500);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const handleSubmitReview = (e) => {
     e.preventDefault();

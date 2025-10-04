@@ -6,6 +6,8 @@ export default async function MovieDetailsPage({ params }) {
   const movie = await getMovieById(id);
   const reviews = await getReviewsForMovie(id);
 
+  throw new Error("ffff");
+
   if (!movie && !isLoading) {
     return (
       <div className="container mx-auto px-4 py-12">

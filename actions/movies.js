@@ -136,7 +136,10 @@ export const deleteMovie = async (movieId) => {
 
 export const getMovieById = async (movieId) => {
   // Call the database based on parameter
-  return MOVIES.at(5);
+  // Simulate 2 second delay
+  return await new Promise((resolve) =>
+    setTimeout(() => resolve(MOVIES.at(5)), 2000)
+  );
 };
 
 export const getReviewsForMovie = async (movieId) => {
