@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { MoreHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -23,14 +25,50 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import UpdateMovieDialog from "@/components/update-movie-dialog";
+import DeleteMovieDialog from "@/components/delete-movie-dialog";
+import { deleteMovie } from "@/actions/movies";
 
 export default function MovieTable({ movies }) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const toggleUpdateDialog = (open) => {
     // Using requestAnimationFrame to ensure the dialog opens after the state update
     requestAnimationFrame(() => setShowUpdateDialog(open || !showUpdateDialog));
+  };
+
+  const toggleDeleteDialog = (open) => {
+    console.log("Toggle Delete", open, !showDeleteDialog);
+    // Using requestAnimationFrame to ensure the dialog opens after the state update
+    requestAnimationFrame(() => setShowDeleteDialog(open || !showDeleteDialog));
+  };
+
+  const handleDeleteMovie = async (movieId) => {
+    setIsLoading(true);
+    const res = await deleteMovie(movieId);
+    setIsLoading(false);
+    if (res?.success) {
+      setSelectedMovie(null);
+      toggleDeleteDialog(false);
+      router.refresh();
+    }
+  };
+
+  const getStatusClass = (status) => {
+    // JavaScript Conditional Switch/Case Syntax
+    switch (status) {
+      case "published":
+        return "bg-green-100 text-green-800";
+      case "draft":
+        return "bg-yellow-100 text-yellow-800";
+      case "archived":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
   };
 
   return (
@@ -79,7 +117,7 @@ export default function MovieTable({ movies }) {
               </TableCell>
               <TableCell>{Number(movie?.imdb?.rating).toFixed(1)}</TableCell>
               <TableCell className="capitalize">
-                <Badge className="bg-green-100 text-green-800">
+                <Badge className={getStatusClass(movie?.status)}>
                   {movie.status}
                 </Badge>
               </TableCell>
@@ -94,7 +132,9 @@ export default function MovieTable({ movies }) {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Movie Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>View Details</DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={`/movies/${movie?.id}`}>View Details</Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => {
                         setSelectedMovie(movie);
@@ -104,7 +144,13 @@ export default function MovieTable({ movies }) {
                       Update
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive">
+                    <DropdownMenuItem
+                      className="text-destructive"
+                      onClick={() => {
+                        setSelectedMovie(movie);
+                        toggleDeleteDialog();
+                      }}
+                    >
                       Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -119,6 +165,14 @@ export default function MovieTable({ movies }) {
         open={showUpdateDialog}
         onOpenChange={toggleUpdateDialog}
         movie={selectedMovie}
+      />
+
+      <DeleteMovieDialog
+        open={showDeleteDialog}
+        onOpenChange={toggleDeleteDialog}
+        onConfirm={handleDeleteMovie}
+        movie={selectedMovie}
+        isLoading={isLoading}
       />
     </div>
   );

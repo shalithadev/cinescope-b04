@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/db";
+import { MOVIES } from "@/lib/data";
 import { ObjectId } from "mongodb";
 
 // Option 1: Get all movies from database using /api/v1/movies
@@ -109,4 +110,44 @@ export const updateMovie = async (movieId, movieDoc) => {
   } catch (error) {
     console.log("Mongodb movie update failed!", error);
   }
+};
+
+// Action to delete movies from the database
+export const deleteMovie = async (movieId) => {
+  try {
+    const result = await db
+      .collection("movies_n")
+      .deleteOne({ _id: ObjectId.createFromHexString(movieId) });
+
+    if (result.acknowledged) {
+      console.log(`A movie was deleted with the _id: ${result.insertedId}`);
+
+      return {
+        success: true,
+        message: "Movie deleted successfully!",
+      };
+    } else {
+      return undefined;
+    }
+  } catch (error) {
+    console.log("Mongodb movie delete failed!", error);
+  }
+};
+
+export const getMovieById = async (movieId) => {
+  // Call the database based on parameter
+  return MOVIES.at(5);
+};
+
+export const getReviewsForMovie = async (movieId) => {
+  return [
+    {
+      id: 123,
+      userAvatar: "",
+      userName: "Test",
+      comment: "This is a test comment",
+      rating: 4.5,
+      createdAt: "",
+    },
+  ];
 };

@@ -18,6 +18,7 @@ export default async function MoviesData({ query = "" }) {
       rated: movie.rated,
       genres: movie.genres,
       poster: movie.poster,
+      backdrop: movie.backdrop,
       imdb: movie.imdb,
       runtime: movie.runtime,
       status: movie.status ?? "published",

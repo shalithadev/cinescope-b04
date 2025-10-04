@@ -23,6 +23,7 @@ import {
 import { updateMovie } from "@/actions/movies";
 
 export default function UpdateMoviesForm({ showDialog, movie }) {
+  console.log(movie);
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formState, setFormState] = useState({

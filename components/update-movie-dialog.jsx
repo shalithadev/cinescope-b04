@@ -1,15 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { PlusIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import UpdateMoviesForm from "./update-movie-form";
 

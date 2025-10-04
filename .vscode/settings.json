@@ -1,5 +1,12 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["Cinescope", "imdb", "metacritic", "mflix", "upserted"]
+  "cSpell.words": [
+    "Cinescope",
+    "doesn",
+    "imdb",
+    "metacritic",
+    "mflix",
+    "upserted"
+  ]
 }
