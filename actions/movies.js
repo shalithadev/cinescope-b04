@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { MOVIES } from "@/lib/data";
+// import { MOVIES } from "@/lib/data";
 import { ObjectId } from "mongodb";
 
 // Option 1: Get all movies from database using /api/v1/movies
@@ -135,22 +135,64 @@ export const deleteMovie = async (movieId) => {
 };
 
 export const getMovieById = async (movieId) => {
+  console.log("Get Movies By Id Triggered!");
   // Call the database based on parameter
   // Simulate 2 second delay
-  return await new Promise((resolve) =>
-    setTimeout(() => resolve(MOVIES.at(5)), 2000)
-  );
+  // return await new Promise((resolve) =>
+  //   setTimeout(() => resolve(MOVIES.at(5)), 2000)
+  // );
+
+  try {
+    const result = await db
+      .collection("movies")
+      .findOne({ _id: ObjectId.createFromHexString(movieId) });
+
+    console.log("DB", result);
+
+    if (result && Object.keys(result).length > 0) {
+      console.log(`A movie found with the _id: ${result._id}`);
+      const refinedResult = {
+        backdrop: result.poster,
+        poster: result.poster,
+        title: result.title,
+        year: result.year,
+        rating: result.imdb.rating ?? 0,
+        releaseDate: result.released,
+        genre: result.genres,
+        overview: result.fullplot ?? result.plot,
+        director: result.directors[0],
+        runtime: result.runtime,
+      };
+      return {
+        success: true,
+        message: "Movies fetched successfully!",
+        data: refinedResult,
+      };
+    } else {
+      return undefined;
+    }
+  } catch (error) {
+    console.log("Mongodb fetch failed!", error);
+  }
 };
 
 export const getReviewsForMovie = async (movieId) => {
-  return [
-    {
-      id: 123,
-      userAvatar: "",
-      userName: "Test",
-      comment: "This is a test comment",
-      rating: 4.5,
-      createdAt: "",
-    },
-  ];
+  console.log("Get Reviews by ID Triggered!");
+
+  return await new Promise((resolve) =>
+    setTimeout(
+      () =>
+        resolve([
+          {
+            id: 123,
+            userAvatar: "",
+            userName: "Test",
+            comment: "This is a test comment",
+            rating: 4.5,
+            createdAt: "2014-08-15T00:00:00.000Z",
+          },
+        ]),
+      2000
+    )
+  );
 };

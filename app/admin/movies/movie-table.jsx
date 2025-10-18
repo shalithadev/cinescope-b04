@@ -108,7 +108,7 @@ export default function MovieTable({ movies }) {
               <TableCell>{movie.year}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
-                  {movie.genres.map((genre) => (
+                  {movie?.genres?.map((genre) => (
                     <Badge key={genre} variant="outline" className="text-xs">
                       {genre}
                     </Badge>

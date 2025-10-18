@@ -1,7 +1,11 @@
+import MovieSelectors from "./movie-selectors";
 import MoviesData from "./movies-data";
 import AddMovieDialog from "@/components/add-movie-dialog";
 
-export default function MoviesPage() {
+export default async function MoviesPage(props) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || "";
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -12,7 +16,9 @@ export default function MoviesPage() {
         <AddMovieDialog />
       </div>
 
-      <MoviesData query="" />
+      <MovieSelectors />
+
+      <MoviesData query={query} />
     </div>
   );
 }
